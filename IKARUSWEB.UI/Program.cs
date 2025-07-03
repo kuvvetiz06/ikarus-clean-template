@@ -1,6 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// 1) HttpClient tanýmý
+builder.Services.AddHttpClient("ApiClient", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
+});
+
+// 2) MVC
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -22,8 +28,8 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
 
 app.Run();
