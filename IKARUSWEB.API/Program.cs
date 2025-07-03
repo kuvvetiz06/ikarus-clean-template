@@ -21,7 +21,7 @@ builder.Host.UseSerilog();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
 
 // Diğer servisler...
 builder.Services.AddInfrastructure(builder.Configuration);
