@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
+    <PackageReference Include="MediatR" Version="13.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IKARUSWEB.Application\IKARUSWEB.Application.csproj" />
+    <ProjectReference Include="..\IKARUSWEB.Infrastructure\IKARUSWEB.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
