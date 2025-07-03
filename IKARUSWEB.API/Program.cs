@@ -3,6 +3,8 @@ using IKARUSWEB.Application.Commands.CreateTenant;
 using IKARUSWEB.Application.Mapping;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,38 +16,37 @@ builder.Services.AddOpenApi();
 // Diğer servisler...
 builder.Services.AddInfrastructure(builder.Configuration);
 
-// Add MediatR
+// 1)Add MediatR
 builder.Services.AddMediatR(cfg =>
 {
     // Handlers, pre/post processors, vb. bu assembly’den taransın
     cfg.RegisterServicesFromAssemblyContaining<CreateTenantCommandHandler>();
 });
-// AutoMapper
+// 2)AutoMapper
 builder.Services.AddAutoMapper(typeof(TenantProfile).Assembly);
 
-// 2) MVC + FluentValidation
+// 3) MVC + FluentValidation
 builder.Services.AddControllers();
 
 builder.Services.AddFluentValidationAutoValidation();         // ← IServiceCollection uzantısı
 builder.Services.AddFluentValidationClientsideAdapters();    // ← opsiyonel, client-side doğrulama
 
-// 3) Validator’ları kaydet
+// 4) Validator’ları kaydet
 builder.Services.AddValidatorsFromAssemblyContaining<CreateTenantCommandValidator>();
 
+// 5) Swagger/OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
-
-
-
-
+app.MapControllers();
 app.Run();
 
