@@ -8,16 +8,24 @@ namespace IKARUSWEB.Infrastructure.Repositories
 {
     public class TenantRepository : ITenantRepository
     {
-        private readonly IKARUSDbContext _context;
-        public TenantRepository(IKARUSDbContext context) => _context = context;
+        private readonly IIKARUSDbContext _context;
+
+        public TenantRepository(IIKARUSDbContext context)
+        {
+            _context = context;
+        }
 
         public async Task AddAsync(Tenant tenant)
         {
             _context.Tenants.Add(tenant);
-            await _context.SaveChangesAsync();
+            // IIKARUSDbContext.SaveChangesAsync requires a CancellationToken parameter
+            await _context.SaveChangesAsync(CancellationToken.None);
         }
 
         public async Task<Tenant?> GetByIdAsync(Guid id)
-            => await _context.Tenants.FirstOrDefaultAsync(t => t.Id == id);
+        {
+            return await _context.Tenants
+                                 .FirstOrDefaultAsync(t => t.Id == id);
+        }
     }
 }

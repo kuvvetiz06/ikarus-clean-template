@@ -11,11 +11,9 @@ namespace IKARUSWEB.Infrastructure.Persistence
         }
 
         public DbSet<Tenant> Tenants { get; set; } = null!;
-       
+
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            return base.SaveChangesAsync(cancellationToken);
-        }
+            => base.SaveChangesAsync(cancellationToken);
     }
 }
