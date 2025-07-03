@@ -24,8 +24,7 @@ namespace IKARUSWEB.Infrastructure.Repositories
 
         public async Task<Tenant?> GetByIdAsync(Guid id)
         {
-            return await _context.Tenants
-                                 .FirstOrDefaultAsync(t => t.Id == id);
+            return await _context.Tenants.FirstOrDefaultAsync(t => t.Id == id);
         }
     }
 }
