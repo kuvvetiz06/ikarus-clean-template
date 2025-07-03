@@ -3,11 +3,21 @@ using IKARUSWEB.Application.Commands.CreateTenant;
 using IKARUSWEB.Application.Mapping;
 using FluentValidation.AspNetCore;
 using FluentValidation;
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Serilog;
+
+
 
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -39,6 +49,24 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// IKARUSWEB.API/Program.cs içinde, Build()’den hemen önce
+app.UseExceptionHandler(errApp =>
+{
+    errApp.Run(async context =>
+    {
+        context.Response.ContentType = "application/json";
+        var feature = context.Features.Get<IExceptionHandlerPathFeature>();
+        var ex = feature?.Error;
+
+        var result = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            error = ex?.Message,
+            path = feature?.Path
+        });
+        await context.Response.WriteAsync(result);
+    });
+});
 
 if (app.Environment.IsDevelopment())
 {
