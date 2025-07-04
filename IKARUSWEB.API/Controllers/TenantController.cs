@@ -3,6 +3,7 @@ using MediatR;
 using IKARUSWEB.Application.Commands.CreateTenant;
 using IKARUSWEB.Application.DTOs;
 using IKARUSWEB.Application.Queries.GetTenantById;
+using IKARUSWEB.Application.Queries.GetAllTenants;
 
 namespace IKARUSWEB.API.Controllers
 {
@@ -14,6 +15,12 @@ namespace IKARUSWEB.API.Controllers
 
         public TenantController(IMediator mediator)
             => _mediator = mediator;
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TenantDto>>> GetAll()
+        {
+            var list = await _mediator.Send(new GetAllTenantsQuery());
+            return Ok(list);
+        }
 
         [HttpPost]
         public async Task<ActionResult<Guid>> Create([FromBody] CreateTenantCommand command)

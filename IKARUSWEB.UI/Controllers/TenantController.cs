@@ -17,6 +17,14 @@ namespace IKARUSWEB.UI.Controllers
             _client = factory.CreateClient("ApiClient");
         }
 
+        // GET: /Tenant
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var list = await _client
+                .GetFromJsonAsync<IEnumerable<TenantViewModel>>("api/tenant");
+            return View(list);
+        }
         // GET: /Tenant/Create
         [HttpGet]
         public IActionResult Create()
