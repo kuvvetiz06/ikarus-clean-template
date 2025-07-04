@@ -35,5 +35,12 @@
             IsActive = false;
             DeletedDate = DateTime.UtcNow;
         }
+
+        public void MarkPassive()
+        {
+            IsDeleted = false;
+            IsActive = true;
+            DeletedDate = DateTime.UtcNow;
+        }
     }
 }

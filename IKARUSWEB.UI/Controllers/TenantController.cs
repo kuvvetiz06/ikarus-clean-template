@@ -103,5 +103,24 @@ namespace IKARUSWEB.UI.Controllers
 
             return RedirectToAction("Details", new { id });
         }
+
+        // DELETE işleyen POST aksiyonu
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            // Burada gerçek kullanıcı adını alın
+            var modifiedUser = User.Identity?.Name ?? "system";
+
+            var response = await _client.DeleteAsync($"api/tenant/{id}?modifiedUser={modifiedUser}");
+            if (!response.IsSuccessStatusCode)
+            {
+                ModelState.AddModelError("", "Silme işlemi başarısız oldu.");
+                // Listeyi yeniden yükleyelim
+                var list = await _client.GetFromJsonAsync<IEnumerable<TenantViewModel>>("api/tenant");
+                return View("Index", list);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
