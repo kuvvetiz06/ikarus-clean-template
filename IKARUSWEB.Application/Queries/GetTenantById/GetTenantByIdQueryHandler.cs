@@ -2,11 +2,7 @@
 using IKARUSWEB.Application.DTOs;
 using IKARUSWEB.Application.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace IKARUSWEB.Application.Queries.GetTenantById
 {
@@ -24,9 +20,7 @@ namespace IKARUSWEB.Application.Queries.GetTenantById
         public async Task<TenantDto?> Handle(GetTenantByIdQuery request, CancellationToken cancellationToken)
         {
             var tenant = await _repo.GetByIdAsync(request.Id);
-            return tenant is null
-                ? null
-                : _mapper.Map<TenantDto>(tenant);
+            return tenant is null ? null : _mapper.Map<TenantDto>(tenant);
         }
     }
 }

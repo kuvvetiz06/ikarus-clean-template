@@ -5,6 +5,9 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
+using IKARUSWEB.Application.Queries.GetTenantById;
+
+
 
 
 
@@ -31,10 +34,10 @@ builder.Services.AddMediatR(cfg =>
 {
     // Handlers, pre/post processors, vb. bu assembly’den taransın
     cfg.RegisterServicesFromAssemblyContaining<CreateTenantCommandHandler>();
+    cfg.RegisterServicesFromAssemblyContaining<GetTenantByIdQueryHandler>();
 });
 // 2)AutoMapper
 builder.Services.AddAutoMapper(typeof(TenantProfile).Assembly);
-
 // 3) MVC + FluentValidation
 builder.Services.AddControllers();
 
