@@ -44,8 +44,7 @@ namespace IKARUSWEB.API.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTenantCommand cmd)
         {
-            if (id != cmd.Id)
-                return BadRequest("Id uyuşmuyor.");
+            if (id != cmd.Id) return BadRequest();
             await _mediator.Send(cmd);
             return NoContent();
         }

@@ -70,9 +70,22 @@ namespace IKARUSWEB.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var dto = await _client.GetFromJsonAsync<UpdateTenantViewModel>($"api/tenant/{id}");
-            if (dto == null) return NotFound();
-            return View(dto);
+            // 1) get DTO
+            var dto = await _client.GetFromJsonAsync<TenantViewModel>($"api/tenant/{id}");
+            if (dto is null) return NotFound();
+
+            // 2) map to UpdateVm
+            var vm = new UpdateTenantViewModel
+            {
+                Id = dto.Id,
+                Code = dto.Code,
+                Name = dto.Name,
+                Address = dto.Address,
+                PhoneNumber = dto.PhoneNumber,
+                Email = dto.Email,
+                ModifiedUser =  "HÜSEYİN GÖKDEMİR"
+            };
+            return View(vm);
         }
 
         // POST: /Tenant/Edit/{id}
