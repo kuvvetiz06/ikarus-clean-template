@@ -65,5 +65,30 @@ namespace IKARUSWEB.UI.Controllers
             if (tenant is null) return NotFound();
             return View(tenant);
         }
+
+        // GET: /Tenant/Edit/{id}
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var dto = await _client.GetFromJsonAsync<UpdateTenantViewModel>($"api/tenant/{id}");
+            if (dto == null) return NotFound();
+            return View(dto);
+        }
+
+        // POST: /Tenant/Edit/{id}
+        [HttpPost]
+        public async Task<IActionResult> Edit(Guid id, UpdateTenantViewModel vm)
+        {
+            if (!ModelState.IsValid) return View(vm);
+
+            var response = await _client.PutAsJsonAsync($"api/tenant/{id}", vm);
+            if (!response.IsSuccessStatusCode)
+            {
+                ModelState.AddModelError("", "Güncelleme sırasında sunucu hatası alındı.");
+                return View(vm);
+            }
+
+            return RedirectToAction("Details", new { id });
+        }
     }
 }

@@ -26,5 +26,11 @@ namespace IKARUSWEB.Infrastructure.Repositories
         {
             return await _context.Tenants.FirstOrDefaultAsync(t => t.Id == id);
         }
+
+        public async Task UpdateAsync(Tenant tenant)
+        {
+            // _context.Tenants.Update(tenant); // EF Core zaten track ediyor, ama explicit isterseniz
+            await _context.SaveChangesAsync(CancellationToken.None);
+        }
     }
 }

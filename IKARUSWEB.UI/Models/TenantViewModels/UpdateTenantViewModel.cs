@@ -1,10 +1,12 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace IKARUSWEB.UI.Models.TenantViewModels
 {
-    public class CreateTenantViewModel
+    public class UpdateTenantViewModel
     {
+        [Required]
+        public Guid Id { get; set; }
+
         [Required, StringLength(50)]
         public string Code { get; set; } = default!;
 
@@ -21,7 +23,7 @@ namespace IKARUSWEB.UI.Models.TenantViewModels
         public string Email { get; set; } = default!;
 
         [Required]
-        public string CreatedUser { get; set; } = default!;
+        public string ModifiedUser { get; set; } = default!;
 
     }
 }
