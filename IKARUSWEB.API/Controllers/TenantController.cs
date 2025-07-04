@@ -5,6 +5,7 @@ using IKARUSWEB.Application.DTOs;
 using IKARUSWEB.Application.Queries.GetTenantById;
 using IKARUSWEB.Application.Queries.GetAllTenants;
 using IKARUSWEB.Application.Commands.UpdateTenant;
+using IKARUSWEB.Application.Commands.DeleteTenant;
 
 namespace IKARUSWEB.API.Controllers
 {
@@ -45,6 +46,18 @@ namespace IKARUSWEB.API.Controllers
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTenantCommand cmd)
         {
             if (id != cmd.Id) return BadRequest();
+            await _mediator.Send(cmd);
+            return NoContent();
+        }
+
+        // DELETE api/tenant/{id}?modifiedUser=someUser
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id, [FromQuery] string modifiedUser)
+        {
+            if (string.IsNullOrWhiteSpace(modifiedUser))
+                return BadRequest("modifiedUser boş olamaz.");
+
+            var cmd = new DeleteTenantCommand(id, modifiedUser);
             await _mediator.Send(cmd);
             return NoContent();
         }
