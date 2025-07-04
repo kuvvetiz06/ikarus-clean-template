@@ -4,6 +4,7 @@ using IKARUSWEB.Application.Commands.CreateTenant;
 using IKARUSWEB.Application.DTOs;
 using IKARUSWEB.Application.Queries.GetTenantById;
 using IKARUSWEB.Application.Queries.GetAllTenants;
+using IKARUSWEB.Application.Commands.UpdateTenant;
 
 namespace IKARUSWEB.API.Controllers
 {
@@ -37,6 +38,16 @@ namespace IKARUSWEB.API.Controllers
             var tenant = await _mediator.Send(new GetTenantByIdQuery(id));
             if (tenant is null) return NotFound();
             return Ok(tenant);
+        }
+
+        // PUT api/tenant/{id}
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTenantCommand cmd)
+        {
+            if (id != cmd.Id)
+                return BadRequest("Id uyuşmuyor.");
+            await _mediator.Send(cmd);
+            return NoContent();
         }
     }
 }
