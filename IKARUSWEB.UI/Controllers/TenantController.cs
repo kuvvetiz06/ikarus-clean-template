@@ -32,6 +32,7 @@ namespace IKARUSWEB.UI.Controllers
 
         // POST: /Tenant/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateTenantViewModel vm)
         {
             if (!ModelState.IsValid)
